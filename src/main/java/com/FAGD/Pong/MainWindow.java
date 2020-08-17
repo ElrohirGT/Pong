@@ -69,7 +69,7 @@ public class MainWindow extends javax.swing.JFrame {
     private Timer Timer;
     
     private final int MessageInitialTime = FrameRate*3;
-    private int MessageCurrentTime = FrameRate*3;
+    private int MessageCurrentTime = (int)(FrameRate*1.5);
     private String[] MessageCurrent = new String[] {""};
     private Color MessageCurrentColor = Color.WHITE;
     
