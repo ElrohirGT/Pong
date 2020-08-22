@@ -65,10 +65,11 @@ public class MainWindow extends javax.swing.JFrame {
     private final Color BallBorderColor = Color.YELLOW;
     
     private final int FrameRate = 80;
-    private int FramesSinceStarted = 0;
+    private long FramesSinceStarted = 0;
     private Timer Timer;
     
-    private final int MessageInitialTime = FrameRate*3;
+    //This is how much the time the message is displayed
+    private final int MessageInitialTime = (int)(FrameRate*1.5);
     private int MessageCurrentTime = (int)(FrameRate*1.5);
     private String[] MessageCurrent = new String[] {""};
     private Color MessageCurrentColor = Color.WHITE;
@@ -89,6 +90,8 @@ public class MainWindow extends javax.swing.JFrame {
         "████████████████████████████████████████████████████████████████████████████"
     };
     private final Color MessageSpeedColor = Color.GREEN;
+    //This is how often the message is displayed
+    private final int MessageSpeedFrameRate = FrameRate*10;
     
     private final String[] MessageShorter = {
         "████████████████████████████████████████████████████████████████████████████████",
@@ -106,6 +109,8 @@ public class MainWindow extends javax.swing.JFrame {
         "████████████████████████████████████████████████████████████████████████████████"
     };
     private final Color MessageShorterColor = new Color(255,69,0);
+    //This is how often the message is displayed
+    private final int MessageShorterFrameRate = FrameRate*17;
     
     public MainWindow() {
         initComponents();
@@ -132,7 +137,6 @@ public class MainWindow extends javax.swing.JFrame {
         add(Panel);
         setResizable(false);
         pack();
-        StartGame();
     }
     
     public void StartGame(){
@@ -191,7 +195,7 @@ public class MainWindow extends javax.swing.JFrame {
     public void DrawMessage(Graphics g){
         g.setColor(MessageCurrentColor);
         g.setFont(new Font("Monaco", Font.BOLD, 12));
-        int x = (int)(GameWidth/5);
+        int x = (int)(GameWidth/2 - g.getFontMetrics().getStringBounds(MessageCurrent[0], g).getWidth()/2);
         int y = (int)(GameHeight/2-g.getFontMetrics().getHeight()*MessageCurrent.length/2);
         for (int i = 0; i < MessageCurrent.length; i++) {
             g.drawString(MessageCurrent[i], x, y+=g.getFontMetrics().getHeight());
@@ -204,17 +208,19 @@ public class MainWindow extends javax.swing.JFrame {
         DrawMargin(g);
         DrawCenterLine(g);
         DrawCenterCircle(g);
-        if (FramesSinceStarted%(FrameRate*13) == 0) {
+        if (FramesSinceStarted > MessageSpeedFrameRate && FramesSinceStarted%MessageSpeedFrameRate == 0) {
             Ball.AggregateSpeed(BallAggregatedSpeed);
             
+            //Reseting the timer and updating the message array
             MessageCurrentTime = MessageInitialTime;
             MessageCurrent = MessageSpeed;
             MessageCurrentColor = MessageSpeedColor;
         }
-        if (FramesSinceStarted % (FrameRate * 25) == 0) {
+        if (FramesSinceStarted > MessageShorterFrameRate && FramesSinceStarted % MessageShorterFrameRate == 0) {
             LeftBar.Shorten(PongBarShorten);
             RightBar.Shorten(PongBarShorten);
             
+            //Reseting the timer and updating the message array
             MessageCurrentTime = MessageInitialTime;
             MessageCurrent = MessageShorter;
             MessageCurrentColor = MessageShorterColor;

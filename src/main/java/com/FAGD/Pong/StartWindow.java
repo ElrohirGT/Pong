@@ -72,7 +72,9 @@ public class StartWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
-        new MainWindow().setVisible(true);
+        MainWindow mw = new MainWindow();
+        mw.setVisible(true);
+        mw.StartGame();
         dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
         dispose();
     }//GEN-LAST:event_btnPlayActionPerformed
